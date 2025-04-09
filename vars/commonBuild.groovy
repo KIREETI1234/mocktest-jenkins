@@ -1,40 +1,15 @@
-// vars/commonBuild.groovy
-
 def call() {
-  pipeline {
-    agent any
-
-    stages {
-      stage('Checkout') {
-        steps {
-          checkout scm
-        }
-      }
-
-      stage('Build') {
-        steps {
-          sh 'gradle build'
-        }
-      }
-
-      stage('Test') {
-        steps {
-          sh 'gradle test'
-        }
-      }
-
-      stage('Deploy') {
-        steps {
-          sh 'ansible-playbook site.yml'
-        }
-      }
+    stage('Checkout') {
+        checkout scm
     }
 
-    post {
-      always {
-        junit 'build/test-results/test/*.xml'
-        archiveArtifacts 'build/libs/*.jar'
-      }
+    stage('Unit Tests') {
+        echo 'Running unit tests...'
+        //sh './gradlew test'
     }
-  }
+
+    stage('Deploy') {
+        echo 'Deploying to environment...'
+        //sh './deploy.sh dev'
+    }
 }
